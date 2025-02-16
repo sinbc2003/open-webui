@@ -568,13 +568,10 @@
 
 			<div class="w-full flex-1 max-w-[calc(100%-4.5rem)]">
 				<slot />
-				
 			</div>
 		</div>
 	{:else}
-	 
 		<slot />
-		
 	{/if}
 {/if}
 
@@ -589,3 +586,8 @@
 	richColors
 	position="top-right"
 />
+
+<!-- 웹페이지 오른쪽 하단에 고정된 문의사항 표시 -->
+<div class="fixed bottom-4 right-4 text-sm text-gray-500">
+	문의사항 sinbc2004@naver.com
+</div>
