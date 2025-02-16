@@ -566,12 +566,19 @@
 		<div class="flex flex-row h-screen">
 			<AppSidebar />
 
-			<div class="w-full flex-1 max-w-[calc(100%-4.5rem)]">
+			<div class="w-full flex-1 max-w-[calc(100%-4.5rem)] relative">
 				<slot />
+				<!-- 문의사항 추가 -->
+				<div class="fixed bottom-4 right-4 text-sm text-gray-500 dark:text-gray-400">
+				  문의사항: 경기도교사 신병철 (sinbc2004@naver.com)
 			</div>
 		</div>
 	{:else}
+	  <div class="relative min-h-screen"> <!-- relative 추가 -->
 		<slot />
+		<!-- 문의사항 추가 -->
+		<div class="fixed bottom-4 right-4 text-sm text-gray-500 dark:text-gray-400">
+		  문의사항: 경기도교사 신병철 (sinbc2004@naver.com)
 	{/if}
 {/if}
 
