@@ -227,7 +227,7 @@
 				if (done) {
 					if ($isLastActiveTab) {
 						if ($settings?.notificationEnabled ?? false) {
-							new Notification(`${title} | Sawl GPT`, {
+							new Notification(`${title} | Open WebUI`, {
 								body: content,
 								icon: `${WEBUI_BASE_URL}/static/favicon.png`
 							});
@@ -373,7 +373,7 @@
 			if (type === 'message') {
 				if ($isLastActiveTab) {
 					if ($settings?.notificationEnabled ?? false) {
-						new Notification(`${data?.user?.name} (#${event?.channel?.name}) | SAWL GPT`, {
+						new Notification(`${data?.user?.name} (#${event?.channel?.name}) | Open WebUI`, {
 							body: data?.content,
 							icon: data?.user?.profile_image_url ?? `${WEBUI_BASE_URL}/static/favicon.png`
 						});
@@ -474,7 +474,7 @@
 		if (backendConfig) {
 			// Save Backend Status to Store
 			await config.set(backendConfig);
-			await WEBUI_NAME.set(Sawl GPT);
+			await WEBUI_NAME.set(backendConfig.name);
 
 			if ($config) {
 				await setupSocket($config.features?.enable_websocket ?? true);
