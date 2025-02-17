@@ -15,11 +15,9 @@
 	import { updateUserRole, getUsers, deleteUserById } from '$lib/apis/users';
 
 	import Pagination from '$lib/components/common/Pagination.svelte';
-	import ChatBubbles from '$lib/components/icons/ChatBubbles.svelte';
 	import Tooltip from '$lib/components/common/Tooltip.svelte';
 
 	import EditUserModal from '$lib/components/admin/Users/UserList/EditUserModal.svelte';
-	import UserChatsModal from '$lib/components/admin/Users/UserList/UserChatsModal.svelte';
 	import AddUserModal from '$lib/components/admin/Users/UserList/AddUserModal.svelte';
 
 	import ConfirmDialog from '$lib/components/common/ConfirmDialog.svelte';
@@ -121,7 +119,6 @@
 		users = await getUsers(localStorage.token);
 	}}
 />
-<UserChatsModal bind:show={showUserChatsModal} user={selectedUser} />
 
 <div class="mt-0.5 mb-2 gap-1 flex flex-col md:flex-row justify-between">
 	<div class="flex md:self-center text-lg font-medium px-0.5">
@@ -373,19 +370,7 @@
 
 					<td class="px-3 py-1 text-right">
 						<div class="flex justify-end w-full">
-							{#if $config.features.enable_admin_chat_access && user.role !== 'admin'}
-								<Tooltip content={$i18n.t('Chats')}>
-									<button
-										class="self-center w-fit text-sm px-2 py-2 hover:bg-black/5 dark:hover:bg-white/5 rounded-xl"
-										on:click={async () => {
-											showUserChatsModal = !showUserChatsModal;
-											selectedUser = user;
-										}}
-									>
-										<ChatBubbles />
-									</button>
-								</Tooltip>
-							{/if}
+							
 
 							<Tooltip content={$i18n.t('Edit User')}>
 								<button
