@@ -589,5 +589,5 @@
 
 <!-- 웹페이지 오른쪽 하단에 고정된 문의사항 표시 -->
 <div class="fixed bottom-4 right-4 text-sm text-gray-500">
-	문의사항 sinbc2004@naver.com
+	문의사항 : 경기과고 교사 신병철 sinbc2004@naver.com (오픈소스로 제작)
 </div>
