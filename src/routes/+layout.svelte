@@ -588,6 +588,6 @@
 />
 
 <!-- 웹페이지 오른쪽 하단에 고정된 문의사항 표시 -->
-<div class="fixed bottom-4 right-12 text-sm text-gray-500">
-	문의: 경기과고 신병철 sinbc2004@naver.com <br /> 오픈소스로 제작, 민감한 정보 입력금지, 송린중 교사만 이용가능
+<div class="fixed bottom-0 right-12 text-sm text-gray-500">
+	문의: 경기과고 신병철 sinbc2004@naver.com <br /> 오픈소스로 제작, 민감한 정보 입력금지, 관산중 교사만 이용가능
 </div>
