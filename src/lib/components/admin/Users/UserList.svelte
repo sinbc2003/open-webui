@@ -15,11 +15,9 @@
 	import { updateUserRole, getUsers, deleteUserById } from '$lib/apis/users';
 
 	import Pagination from '$lib/components/common/Pagination.svelte';
-	import ChatBubbles from '$lib/components/icons/ChatBubbles.svelte';
 	import Tooltip from '$lib/components/common/Tooltip.svelte';
 
 	import EditUserModal from '$lib/components/admin/Users/UserList/EditUserModal.svelte';
-	import UserChatsModal from '$lib/components/admin/Users/UserList/UserChatsModal.svelte';
 	import AddUserModal from '$lib/components/admin/Users/UserList/AddUserModal.svelte';
 
 	import ConfirmDialog from '$lib/components/common/ConfirmDialog.svelte';
@@ -49,7 +47,6 @@
 	let showDeleteConfirmDialog = false;
 	let showAddUserModal = false;
 
-	let showUserChatsModal = false;
 	let showEditUserModal = false;
 	let showUpdateRoleModal = false;
 
@@ -164,7 +161,6 @@
 		getUserList();
 	}}
 />
-<UserChatsModal bind:show={showUserChatsModal} user={selectedUser} />
 
 {#if ($config?.license_metadata?.seats ?? null) !== null && users.length > $config?.license_metadata?.seats}
 	<div class=" mt-1 mb-2 text-xs text-red-500">
@@ -444,20 +440,6 @@
 
 					<td class="px-3 py-1 text-right">
 						<div class="flex justify-end w-full">
-							{#if $config.features.enable_admin_chat_access && user.role !== 'admin'}
-								<Tooltip content={$i18n.t('Chats')}>
-									<button
-										class="self-center w-fit text-sm px-2 py-2 hover:bg-black/5 dark:hover:bg-white/5 rounded-xl"
-										on:click={async () => {
-											showUserChatsModal = !showUserChatsModal;
-											selectedUser = user;
-										}}
-									>
-										<ChatBubbles />
-									</button>
-								</Tooltip>
-							{/if}
-
 							<Tooltip content={$i18n.t('Edit User')}>
 								<button
 									class="self-center w-fit text-sm px-2 py-2 hover:bg-black/5 dark:hover:bg-white/5 rounded-xl"
@@ -535,7 +517,7 @@
 > 
 > Open WebUI is proudly open source and completely free, with no hidden limits — and we'd love to keep it that way. 🌱  
 >
-> By supporting the project through sponsorship or an enterprise license, you’re not only helping us stay independent, you’re also helping us ship new features faster, improve stability, and grow the project for the long haul. With an *enterprise license*, you also get additional perks like dedicated support, customization options, and more — all at a fraction of what it would cost to build and maintain internally.  
+> By supporting the project through sponsorship or an enterprise license, you're not only helping us stay independent, you're also helping us ship new features faster, improve stability, and grow the project for the long haul. With an *enterprise license*, you also get additional perks like dedicated support, customization options, and more — all at a fraction of what it would cost to build and maintain internally.  
 > 
 > Your support helps us stay independent and continue building great tools for everyone. 💛
 > 
