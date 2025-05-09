@@ -630,3 +630,9 @@
 	position="top-right"
 	closeButton
 />
+
+<!-- 웹페이지 오른쪽 하단에 고정된 문의사항 표시 -->
+<div class="fixed bottom-4 right-4 text-sm text-gray-500">
+	문의사항 : 경기과고 교사 신병철 (대화내역은 본인만 볼 수 있음)
+</div>
+
