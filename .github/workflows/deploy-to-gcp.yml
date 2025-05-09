@@ -1,4 +1,4 @@
-name: Build and Push Docker Image
+name: Deploy to GCP
 
 on:
   push:
@@ -8,10 +8,10 @@ on:
 env:
   PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
   GCR_REGION: asia.gcr.io
-  IMAGE_NAME: open-webui
+  IMAGE_NAME: open-webui-${{ vars.SCHOOL_NAME_SHORT }}
 
 jobs:
-  build-and-push:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -29,12 +29,21 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t ${{ env.GCR_REGION }}/${{ env.PROJECT_ID }}/${{ env.IMAGE_NAME }}:latest .
+          # 환경 파일 설정
+          echo "USE_CUDA=false" > .env
+          echo "USE_OLLAMA=false" >> .env
+          echo "USE_EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2" >> .env
+          
+          # Docker 빌드 (기존 Dockerfile 사용)
+          docker build -t ${{ env.GCR_REGION }}/${{ env.PROJECT_ID }}/${{ env.IMAGE_NAME }}:latest \
+            --build-arg BUILD_HASH=school-${GITHUB_SHA::7} .
+          
+          # GCR로 이미지 푸시
           docker push ${{ env.GCR_REGION }}/${{ env.PROJECT_ID }}/${{ env.IMAGE_NAME }}:latest
           
       - name: Deploy to Cloud Run
         run: |
-          gcloud run deploy open-webui \
+          gcloud run deploy open-webui-${{ vars.SCHOOL_NAME_SHORT }} \
             --image ${{ env.GCR_REGION }}/${{ env.PROJECT_ID }}/${{ env.IMAGE_NAME }}:latest \
             --platform managed \
             --region asia-northeast3 \
