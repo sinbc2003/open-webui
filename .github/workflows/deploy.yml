@@ -1,0 +1,62 @@
+name: Build and Deploy to GCP
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      gcp_project_id:
+        description: 'GCP Project ID'
+        required: true
+      sql_instance:
+        description: 'SQL Instance Name'
+        required: true
+      sql_database:
+        description: 'Database Name'
+        required: true
+      service_name:
+        description: 'Cloud Run Service Name'
+        required: true
+        default: 'open-webui'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Set up Google Cloud SDK
+      uses: google-github-actions/setup-gcloud@v1
+      with:
+        project_id: ${{ github.event.inputs.gcp_project_id || secrets.GCP_PROJECT_ID }}
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        export_default_credentials: true
+    
+    - name: Authorize Docker push
+      run: gcloud auth configure-docker asia.gcr.io
+    
+    - name: Build and push Docker image
+      run: |
+        PROJECT_ID=${{ github.event.inputs.gcp_project_id || secrets.GCP_PROJECT_ID }}
+        IMAGE_NAME=asia.gcr.io/$PROJECT_ID/open-webui:${{ github.sha }}
+        docker build -t $IMAGE_NAME .
+        docker push $IMAGE_NAME
+    
+    - name: Deploy to Cloud Run
+      run: |
+        PROJECT_ID=${{ github.event.inputs.gcp_project_id || secrets.GCP_PROJECT_ID }}
+        SQL_INSTANCE=${{ github.event.inputs.sql_instance || secrets.SQL_INSTANCE_NAME }}
+        SQL_DATABASE=${{ github.event.inputs.sql_database || secrets.SQL_DATABASE }}
+        SERVICE_NAME=${{ github.event.inputs.service_name || 'open-webui' }}
+        IMAGE_NAME=asia.gcr.io/$PROJECT_ID/open-webui:${{ github.sha }}
+        
+        gcloud run deploy $SERVICE_NAME \
+          --image $IMAGE_NAME \
+          --platform managed \
+          --region asia-northeast3 \
+          --allow-unauthenticated \
+          --add-cloudsql-instances $PROJECT_ID:asia-northeast3:$SQL_INSTANCE \
+          --set-env-vars "DATABASE_URL=postgresql://${{ secrets.SQL_USER }}:${{ secrets.SQL_PASSWORD }}@localhost:5432/$SQL_DATABASE" \
+          --project $PROJECT_ID
