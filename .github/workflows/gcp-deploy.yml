@@ -56,6 +56,6 @@ jobs:
           --image=${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}/${{ env.SERVICE_NAME }}:${{ github.sha }} \
           --platform=managed \
           --allow-unauthenticated \
-          --add-cloudsql-instances=${{ env.PROJECT_ID }}:${{ env.REGION }}:open-webui-db \
-          --set-env-vars="DB_HOST=localhost,DB_USER=${{ secrets.DB_USER }},DB_PASS=${{ secrets.DB_PASS }},DB_NAME=${{ secrets.DB_NAME }},DATABASE_URL=mysql+pymysql://${{ secrets.DB_USER }}:${{ secrets.DB_PASS }}@localhost/${{ secrets.DB_NAME }}?unix_socket=/cloudsql/${{ env.PROJECT_ID }}:${{ env.REGION }}:open-webui-db" \
+          --add-cloudsql-instances=${{ env.PROJECT_ID }}:${{ env.REGION }}:pg-openwebui-db \
+          --set-env-vars="DATABASE_URL=postgresql://postgres:159753tt@localhost/openwebui?host=/cloudsql/${{ env.PROJECT_ID }}:${{ env.REGION }}:pg-openwebui-db" \
           --timeout=300s
