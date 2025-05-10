@@ -57,5 +57,5 @@ jobs:
           --platform=managed \
           --allow-unauthenticated \
           --add-cloudsql-instances=${{ env.PROJECT_ID }}:${{ env.REGION }}:pg-openwebui-db \
-          --set-env-vars="DATABASE_URL=postgresql://postgres:159753tt@localhost/openwebui?host=/cloudsql/${{ env.PROJECT_ID }}:${{ env.REGION }}:pg-openwebui-db" \
+          --set-env-vars="DATABASE_URL=postgres://postgres:159753tt@localhost/openwebui?host=/cloudsql/${{ env.PROJECT_ID }}:${{ env.REGION }}:pg-openwebui-db" \
           --timeout=300s
