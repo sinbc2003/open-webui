@@ -116,7 +116,7 @@ This will start the Open WebUI server, which you can access at [http://localhost
 > If you wish to utilize Open WebUI with Ollama included or CUDA acceleration, we recommend utilizing our official images tagged with either `:cuda` or `:ollama`. To enable CUDA, you must install the [Nvidia CUDA container toolkit](https://docs.nvidia.com/dgx/nvidia-container-runtime-upgrade/) on your Linux/WSL system.
 
 ### Installation with Default Configuration
-
+ 
 - **If Ollama is on your computer**, use this command:
 
   ```bash
