@@ -57,4 +57,4 @@ jobs:
           --platform=managed \
           --allow-unauthenticated \
           --add-cloudsql-instances=${{ env.PROJECT_ID }}:${{ env.REGION }}:open-webui-db \
-          --set-env-vars="DB_HOST=${{ secrets.DB_HOST }},DB_USER=${{ secrets.DB_USER }},DB_PASS=${{ secrets.DB_PASS }},DB_NAME=${{ secrets.DB_NAME }},PORT=8080"
+          --set-env-vars="DB_HOST=${{ secrets.DB_HOST }},DB_USER=${{ secrets.DB_USER }},DB_PASS=${{ secrets.DB_PASS }},DB_NAME=${{ secrets.DB_NAME }}"
