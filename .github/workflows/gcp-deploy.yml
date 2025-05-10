@@ -27,7 +27,15 @@ jobs:
       uses: google-github-actions/setup-gcloud@v1
 
     - name: Configure Docker
-      run: gcloud auth configure-docker asia-artifact-registry-docker.pkg.dev
+      run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
+
+    - name: Create Artifact Registry repository if it doesn't exist
+      run: |
+        if ! gcloud artifacts repositories describe ${{ env.SERVICE_NAME }} --location=${{ env.REGION }} 2>/dev/null; then
+          gcloud artifacts repositories create ${{ env.SERVICE_NAME }} \
+            --repository-format=docker \
+            --location=${{ env.REGION }}
+        fi
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
@@ -37,7 +45,7 @@ jobs:
       with:
         context: .
         push: true
-        tags: asia-artifact-registry-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}/${{ env.SERVICE_NAME }}:${{ github.sha }}
+        tags: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}/${{ env.SERVICE_NAME }}:${{ github.sha }}
         build-args: |
           BUILD_HASH=${{ github.sha }}
 
@@ -45,7 +53,8 @@ jobs:
       run: |-
         gcloud run deploy ${{ env.SERVICE_NAME }} \
           --region=${{ env.REGION }} \
-          --image=asia-artifact-registry-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}/${{ env.SERVICE_NAME }}:${{ github.sha }} \
+          --image=${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}/${{ env.SERVICE_NAME }}:${{ github.sha }} \
           --platform=managed \
           --allow-unauthenticated \
-          --set-env-vars="DB_HOST=${{ secrets.DB_HOST }},DB_USER=${{ secrets.DB_USER }},DB_PASS=${{ secrets.DB_PASS }},DB_NAME=${{ secrets.DB_NAME }}"
+          --add-cloudsql-instances=${{ env.PROJECT_ID }}:${{ env.REGION }}:open-webui-db \
+          --set-env-vars="DB_HOST=${{ secrets.DB_HOST }},DB_USER=${{ secrets.DB_USER }},DB_PASS=${{ secrets.DB_PASS }},DB_NAME=${{ secrets.DB_NAME }},PORT=8080"
