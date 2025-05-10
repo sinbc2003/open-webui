@@ -57,8 +57,5 @@ jobs:
           --platform=managed \
           --allow-unauthenticated \
           --add-cloudsql-instances=${{ env.PROJECT_ID }}:${{ env.REGION }}:open-webui-db \
-          --set-env-vars="DB_HOST=${{ secrets.DB_HOST }},DB_USER=${{ secrets.DB_USER }},DB_PASS=${{ secrets.DB_PASS }},DB_NAME=${{ secrets.DB_NAME }}" \
-          --port=8080 \
-          --cpu=1 \
-          --memory=4Gi \
-          --timeout=300
+          --set-env-vars="DB_HOST=localhost,DB_USER=${{ secrets.DB_USER }},DB_PASS=${{ secrets.DB_PASS }},DB_NAME=${{ secrets.DB_NAME }},DATABASE_URL=mysql+pymysql://${{ secrets.DB_USER }}:${{ secrets.DB_PASS }}@localhost/${{ secrets.DB_NAME }}?unix_socket=/cloudsql/${{ env.PROJECT_ID }}:${{ env.REGION }}:open-webui-db" \
+          --timeout=300s
